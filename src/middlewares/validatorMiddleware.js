@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const logger = require('../helpers/logger');
+
 const schema = Joi.object({
   userId: Joi.number().integer(),
   videoId: Joi.number().integer(),
