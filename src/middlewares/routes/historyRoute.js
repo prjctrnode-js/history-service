@@ -1,4 +1,5 @@
 const Router = require('@koa/router');
+
 const router = new Router();
 const db = require('../../db/models');
 const updateOrCreate = require('../../helpers/updateOrCreate');
@@ -21,7 +22,7 @@ router.post('/history', async (ctx) => {
   const { userId, videoId } = ctx.request.body;
   ctx.body = await updateOrCreate(
     db.History,
-    { videoId: videoId },
+    { videoId },
     {
       videoId,
       userId,
