@@ -5,7 +5,6 @@ const getHistory = async (ctx) => {
     success: true,
     message: 'Success',
     data: await db.History.findAll({
-      atributes: ['id', 'videoId'],
       where: {
         userId: ctx.request.query.userId,
       },
