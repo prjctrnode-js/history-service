@@ -6,7 +6,9 @@ const validatorMiddleware = require('../validatorMiddleware');
 const historyRoute = new Router();
 historyRoute.get(
   '/history',
-  validatorMiddleware('getHistory', (ctx) => ({ userId: ctx.request.query.userId })),
+  validatorMiddleware('getHistory', (ctx) => ({
+    userId: ctx.request.query.userId,
+  })),
   async (ctx) => {
     const { userId } = ctx.request.query;
     const { limit } = ctx.request.query;
@@ -17,12 +19,12 @@ historyRoute.get(
 );
 historyRoute.post(
   '/history',
-  validatorMiddleware('createHistory', (ctx) => ctx.request.body),async(ctx)=>{
+  validatorMiddleware('createHistory', (ctx) => ctx.request.body),
+  async (ctx) => {
     const { userId, videoId } = ctx.request.body;
-    const {status, body} = await createHistory(userId, videoId)
-    ctx.status = status
-    ctx.body = body
+    const { status, body } = await createHistory(userId, videoId);
+    ctx.status = status;
+    ctx.body = body;
   }
- 
 );
 module.exports = historyRoute;
