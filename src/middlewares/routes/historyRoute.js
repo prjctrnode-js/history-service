@@ -2,10 +2,11 @@ const Router = require('@koa/router');
 const getHistory = require('../../controllers/getHistory');
 const createHistory = require('../../controllers/createHistory');
 const validatorMiddleware = require('../validatorMiddleware');
+const isAuth = require('../isAuth')
 
 const historyRoute = new Router();
 historyRoute.get(
-  '/history',
+  '/history',isAuth,
   validatorMiddleware('getHistory', (ctx) => ({
     userId: ctx.request.query.userId,
   })),
@@ -18,7 +19,7 @@ historyRoute.get(
   }
 );
 historyRoute.post(
-  '/history',
+  '/history', isAuth,
   validatorMiddleware('createHistory', (ctx) => ctx.request.body),
   async (ctx) => {
     const { userId, videoId } = ctx.request.body;
