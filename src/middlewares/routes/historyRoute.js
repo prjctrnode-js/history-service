@@ -3,6 +3,7 @@ const getHistory = require('../../controllers/getHistory');
 const createHistory = require('../../controllers/createHistory');
 const validatorMiddleware = require('../validatorMiddleware');
 const isAuth = require('../isAuth')
+const isAuthInside = require('../isAuthInside')
 
 const historyRoute = new Router();
 historyRoute.get(
@@ -19,7 +20,7 @@ historyRoute.get(
   }
 );
 historyRoute.post(
-  '/history', isAuth,
+  '/history', isAuthInside,
   validatorMiddleware('createHistory', (ctx) => ctx.request.body),
   async (ctx) => {
     const { userId, videoId } = ctx.request.body;
