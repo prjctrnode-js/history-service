@@ -14,7 +14,6 @@ module.exports = {
       videoId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
       },
       createdAt: {
         type: Sequelize.DATE,
