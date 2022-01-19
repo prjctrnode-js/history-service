@@ -5,6 +5,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const loggerMiddleware = require('./middlewares/loggerMiddleware');
 const logger = require('./helpers/logger');
 const routes = require('./middlewares/routes/routes');
+const amqp = require('./services/amqp')
 
 const app = new Koa();
 app.use(loggerMiddleware);
