@@ -16,6 +16,13 @@ const amqpConnect = async ()=> {
       message: 'rabbitmq channel opened',
       level: 'info'
     });
+    process.on('exit', () => {
+      channel.close();
+      logger.log({
+        message: 'Closing rabbitmq channel',
+        level: 'info'
+      });
+    });
     amqpHistoryWorker(channel)
   } catch (error) {
     logger.log({
