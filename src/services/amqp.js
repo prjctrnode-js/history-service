@@ -1,48 +1,28 @@
 const amqp = require('amqplib');
-const db = require('../db/models');
-const updateOrCreate = require('../helpers/updateOrCreate');
+const logger = require('../helpers/logger')
+const amqpHistoryWorker = require('./worker.createHistory')
 
-const EXCHANGE_NAME = 'history';
-const QUEUE_NAME = 'histor';
+const CONNECTION_URL = 'amqp://localhost';
 
-class AMQP {
-  async connect() {
-    const connection = await amqp.connect('amqp://localhost');
-    console.log('rabbit connected');
-
+const amqpConnect = async ()=> {
+  try {
+    const connection = await amqp.connect(CONNECTION_URL);
+    logger.log({
+      message: 'rabbitmq connected',
+      level: 'info'
+    });
     const channel = await connection.createChannel();
-    console.log('channel opened');
-
-    const historyQueue = await channel.assertQueue(QUEUE_NAME);
-    console.log('queue asserted');
-
-    channel.bindQueue(historyQueue.queue, EXCHANGE_NAME, 'history');
-
-    await channel.consume(
-      QUEUE_NAME,
-      async (message) => {
-        const { videoId, userId } = JSON.parse(message.content);
-        await updateOrCreate(
-          db.History,
-          { videoId, userId },
-          {
-            videoId,
-            userId,
-          }
-        );
-      },
-      { noAck: true }
-    );
-
-    this.channel = channel;
+    logger.log({
+      message: 'rabbitmq channel opened',
+      level: 'info'
+    });
+    amqpHistoryWorker(channel)
+  } catch (error) {
+    logger.log({
+      message: error.message,
+      level: 'info'
+    });
   }
 }
 
-let amqpInstance;
-
-(async () => {
-  amqpInstance = new AMQP();
-  await amqpInstance.connect();
-})();
-
-module.exports = amqpInstance;
+module.exports = amqpConnect;
