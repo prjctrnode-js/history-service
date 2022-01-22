@@ -8,11 +8,8 @@ const isAuthInside = require('../isAuthInside')
 const historyRoute = new Router();
 historyRoute.get(
   '/history',isAuth,
-  validatorMiddleware('getHistory', (ctx) => ({
-    userId: ctx.request.query.userId,
-  })),
   async (ctx) => {
-    const { userId } = ctx.request.query;
+    const userId  = ctx.user.id;
     const { limit } = ctx.request.query;
     const { status, body } = await getHistory(userId, limit);
     ctx.status = status;
