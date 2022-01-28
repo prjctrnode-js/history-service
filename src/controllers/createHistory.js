@@ -5,7 +5,7 @@ const createHistory = async (userId, videoId) => ({
     status: 200,
     body: await updateOrCreate(
       db.History,
-      { videoId },
+      { videoId, userId },
       {
         videoId,
         userId,
